@@ -31,6 +31,14 @@ public:
         }
         return ptr_instance;
     }
+    static void clean_instance()
+    {
+        if (ptr_instance != nullptr)
+        {
+            ptr_instance->clear_all_textures();
+            delete ptr_instance;
+        }
+    }
 
 private:
     static TextureManager *ptr_instance;

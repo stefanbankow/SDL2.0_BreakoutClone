@@ -82,7 +82,7 @@ void Game::render()
 
 void Game::clean()
 {
-    TextureManager::get_instance()->clear_all_textures();
+    TextureManager::clean_instance();
 
     delete platform;
     platform = nullptr;
