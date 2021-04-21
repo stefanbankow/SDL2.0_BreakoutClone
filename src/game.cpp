@@ -1,10 +1,10 @@
 #include "game.hpp"
 #include "platform.hpp"
-#include "brick.hpp"
+#include "brick_tile_map.hpp"
 #include "texture_manager.hpp"
 
 Platform *platform = nullptr;
-Brick *brick = nullptr;
+BrickTileMap *brick_map = nullptr;
 
 void Game::init(const char *title, int width, int height, bool fullscreen, int x_pos, int y_pos)
 {
@@ -36,12 +36,45 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
         std::cout << "Successfully initialized game!\n";
         is_running = true;
 
-        TextureManager::get_instance()->load_texture("assets/platform.png", "platform", renderer);
+        int brickArray[30] = {
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1, //
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2, //
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+        }; //
+
+        TextureManager::get_instance()
+            ->load_texture("assets/platform.png", "platform", renderer);
         TextureManager::get_instance()->load_texture("assets/bricks.png", "bricks", renderer);
         platform = new Platform("platform", renderer, width / 2 - width / 14, height - 50, 128, 16);
         platform->set_size(width / 7, height / 25);
-        brick = new Brick("bricks", renderer, 0, 0, 64, 32, BRICK_BLUE);
-        brick->set_size(128, 64);
+        brick_map = new BrickTileMap("bricks", renderer, brickArray, 3, 10, 128, 64);
     }
     else
     {
@@ -75,8 +108,9 @@ void Game::render()
     if (platform != nullptr)
         platform->render();
 
-    if (brick != nullptr)
-        brick->render();
+    if (brick_map != nullptr)
+        brick_map->render();
+
     SDL_RenderPresent(renderer);
 }
 
@@ -87,8 +121,8 @@ void Game::clean()
     delete platform;
     platform = nullptr;
 
-    delete brick;
-    brick = nullptr;
+    delete brick_map;
+    brick_map = nullptr;
 
     SDL_DestroyRenderer(renderer);
     renderer = nullptr;
