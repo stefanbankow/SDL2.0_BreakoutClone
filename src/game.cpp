@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "platform.hpp"
+#include "game.hpp"
 #include "brick_tile_map.hpp"
 #include "texture_manager.hpp"
 
@@ -69,11 +70,18 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
             4,
         }; //
 
-        TextureManager::get_instance()
-            ->load_texture("assets/platform.png", "platform", renderer);
+        TextureManager::get_instance()->load_texture("assets/platform.png", "platform", renderer);
         TextureManager::get_instance()->load_texture("assets/bricks.png", "bricks", renderer);
-        platform = new Platform("platform", renderer, width / 2 - width / 14, height - 50, 128, 16);
-        platform->set_size(width / 7, height / 25);
+        TextureManager::get_instance()->load_texture("assets/ball.png", "ball", renderer);
+
+        int platform_dst_w = width / 7;
+        int platform_dst_h = height / 25;
+        int platform_x_pos = width / 2 - width / 14;
+        int platform_y_pos = height - 50;
+
+        platform = new Platform("platform", "ball", renderer, platform_x_pos, platform_y_pos, 128, 16, 2);
+        platform->set_size(platform_dst_w, platform_dst_h);
+
         brick_map = new BrickTileMap("bricks", renderer, brickArray, 3, 10, 128, 64);
     }
     else
@@ -90,11 +98,10 @@ void Game::handle_input()
     SDL_PollEvent(&e);
 
     if (e.type == SDL_QUIT)
-    {
         is_running = false;
-    }
+
     if (platform != nullptr)
-        platform->handleInput(e);
+        platform->handle_input(e);
 }
 void Game::update()
 {
@@ -105,11 +112,12 @@ void Game::update()
 void Game::render()
 {
     SDL_RenderClear(renderer);
-    if (platform != nullptr)
-        platform->render();
-
+    //The entities that should be rendered on top have to be last
     if (brick_map != nullptr)
         brick_map->render();
+
+    if (platform != nullptr)
+        platform->render();
 
     SDL_RenderPresent(renderer);
 }

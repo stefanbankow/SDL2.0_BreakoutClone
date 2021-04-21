@@ -17,7 +17,7 @@ public:
     Brick(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int src_w, int src_h, int brick_type);
     void render() override;
     void set_destroyed(bool value) { destroyed = value; };
-    bool is_destroyed() { return destroyed; };
+    bool is_destroyed() const { return destroyed; };
 
 private:
     bool destroyed = false;
