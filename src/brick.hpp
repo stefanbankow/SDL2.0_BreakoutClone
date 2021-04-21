@@ -6,11 +6,10 @@
 
 enum BrickTextures
 {
-    BRICK_RED,
+    BRICK_RED = 1,
     BRICK_GREEN,
     BRICK_BLUE,
     BRICK_YELLOW,
-    BRICK_DEFAULT
 };
 class Brick : public GameEntity
 {

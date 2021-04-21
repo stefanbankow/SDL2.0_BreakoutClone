@@ -22,7 +22,7 @@ bool TextureManager::load_texture(std::string path, std::string id, SDL_Renderer
     }
 
     SDL_FreeSurface(tmp_surface);
-    std::cout << "Successfully loaded texture\n";
+    std::cout << "Successfully loaded texture \"" << path << "\"\n";
     textures_map[id] = new_texture;
     return true;
 }
