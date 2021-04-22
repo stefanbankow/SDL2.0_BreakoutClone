@@ -88,6 +88,14 @@ void Platform::move()
     }
 }
 
+bool Platform::check_ball_collision(GameEntity &entity)
+{
+    if (ball != nullptr)
+        return ball->check_collision(entity);
+
+    return false;
+}
+
 void Platform::update()
 {
     move();

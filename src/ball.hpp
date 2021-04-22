@@ -2,6 +2,7 @@
 #define BALL_HPP
 #include <string>
 #include <random>
+#include <iostream>
 
 #include "game_entity.hpp"
 
@@ -18,10 +19,12 @@ public:
     void move_with_platform(int platform_velocity);
     void release();
 
+    bool check_collision(GameEntity &entity) const;
+
     void set_location(int x, int y);
     void set_size(int width, int height);
 
-    bool is_released() { return released; }
+    bool is_released() const { return released; }
 
 private:
     int y_movement_speed;

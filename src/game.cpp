@@ -105,6 +105,12 @@ void Game::handle_input()
 }
 void Game::update()
 {
+
+    for (int i = 0; i < brick_map->get_brick_count(); i++)
+    {
+        GameEntity *brick = brick_map->get_brick_at_index(i);
+        platform->check_ball_collision(*brick);
+    }
     if (platform != nullptr)
         platform->update();
 }
