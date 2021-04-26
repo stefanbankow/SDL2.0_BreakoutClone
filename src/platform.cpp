@@ -1,19 +1,19 @@
 #include "platform.hpp"
 #include "texture_manager.hpp"
 
-Platform::Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int movement_speed)
+Platform::Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int movement_speed, int ball_movement_speed)
     : GameEntity(texture_id, renderer, x_pos, y_pos)
 {
     this->movement_speed = movement_speed > 0 ? movement_speed : 1; //Make sure its a positive value larger than 0 or make it 1 otherwise
-    this->ball = new Ball(ball_texture_id, renderer, 0, 0, 2);
+    this->ball = new Ball(ball_texture_id, renderer, 0, 0, ball_movement_speed);
 
     ball->set_size(dst_w / 7, dst_w / 7);
 }
-Platform::Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int width, int height, int movement_speed)
+Platform::Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int width, int height, int movement_speed, int ball_movement_speed)
     : GameEntity(texture_id, renderer, x_pos, y_pos, width, height)
 {
     this->movement_speed = movement_speed > 0 ? movement_speed : 1; //Make sure its a positive value larger than 0 or make it 1 otherwise
-    this->ball = new Ball(ball_texture_id, renderer, 0, 0, 2);
+    this->ball = new Ball(ball_texture_id, renderer, 0, 0, ball_movement_speed);
 
     ball->set_size(dst_w / 7, dst_w / 7);
 }

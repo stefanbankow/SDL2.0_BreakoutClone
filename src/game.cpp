@@ -79,7 +79,7 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
         int platform_x_pos = width / 2 - width / 14;
         int platform_y_pos = height - 50;
 
-        platform = new Platform("platform", "ball", renderer, platform_x_pos, platform_y_pos, 128, 16, 2);
+        platform = new Platform("platform", "ball", renderer, platform_x_pos, platform_y_pos, 128, 16, 2, 5);
         platform->set_size(platform_dst_w, platform_dst_h);
 
         brick_map = new BrickTileMap("bricks", renderer, brickArray, 3, 10, 128, 64);

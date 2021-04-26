@@ -15,11 +15,16 @@ public:
     //Get the directional vector (Vector with length of 1)
     Vector2D get_normalized_vector() const;
 
+    //Util function for finding the dot_product of 2 vectors
+    static float dot_product(Vector2D vector1, Vector2D vector2);
+
     //For debugging. Prints the x, y and length
     void print() const;
 
     float get_x() const { return x; }
+    void set_x(float value);
     float get_y() const { return y; }
+    void set_y(float value);
     float get_length() const { return length; }
 
 private:

@@ -33,7 +33,7 @@ void Ball::move()
             x_velocity = -x_velocity;
         }
 
-        if (y_pos < 0) //Check only for top of screen
+        if (y_pos < 0 || y_pos + dst_h > screen_height) //Check only for top of screen
         {
             y_pos -= y_velocity;
             y_velocity = -y_velocity;
@@ -105,33 +105,34 @@ bool Ball::check_brick_collision(Brick &entity)
 
         //SDL DOESN'T USE THE CARTESIAN COORDINATE SYSTEM, THAT'S WHY THE UP VECTOR HAS -1 VALUE FOR Y
         //!!!!!!!!!!!!!!! CODE FOR DETERMINING THE COLLISION DIRECTION VECTOR STILL DOESN'T WORK PROPERLY AND HAS TO BE FIXED !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        float entity_center_x = entity.get_x_pos() + entity.get_desired_width() / 2;
-        float entity_center_y = entity.get_y_pos() + entity.get_desired_height() / 2;
+
+        double entity_center_x = entity.get_x_pos() + entity.get_desired_width() / 2;
+        double entity_center_y = entity.get_y_pos() + entity.get_desired_height() / 2;
+
         Vector2D hit_direction(entity_center_x, entity_center_y, closest_point_x, closest_point_y);
+        //We have to account for the fact that the brick's width may be different than it's height and adjust the vector accordingly in order the get the appropriate direction,
+        //since at the end we are effectively comparing the normalized vector against a square, not a rectangle
+        double side_disparity_ratio = other_entity_h * 1.0 / other_entity_w;
+        hit_direction.set_x(hit_direction.get_x() * side_disparity_ratio);
+
         Vector2D normalized_vector = hit_direction.get_normalized_vector();
 
         int direction_index = 0;
-        double total_offset = 1;
+        double max = 0;
 
         //Here we are checking the normalized vector against the 4 directions and deciding which one is closest to it, so that we can send off the ball in this direction
         for (int i = 0; i < 4; i++)
         {
 
-            double x_offset = abs(normalized_vector.get_x() - directions[i].get_x());
-            double y_offset = abs(normalized_vector.get_y() - directions[i].get_y());
-
-            double new_offset = x_offset + y_offset;
-
-            if (new_offset < total_offset)
+            float dot_product = Vector2D::dot_product(normalized_vector, directions[i]);
+            std::cout << "Dot product of " << i << ": " << dot_product << "\n";
+            if (dot_product > max)
             {
-                total_offset = new_offset;
+                max = dot_product;
                 direction_index = i;
             }
         }
 
-        std::cout << "Hit Direction: ";
-        hit_direction.print();
-        std::cout << "\n";
         std::cout << "Direction normalized: ";
         normalized_vector.print();
         std::cout << "\n";
@@ -139,16 +140,12 @@ bool Ball::check_brick_collision(Brick &entity)
         switch (direction_index)
         {
         case VECTOR_UP:
-            std::cout << "UP\n";
+        case VECTOR_DOWN:
+            y_velocity = -y_velocity;
             break;
         case VECTOR_RIGHT:
-            std::cout << "RIGHT\n";
-            break;
-        case VECTOR_DOWN:
-            std::cout << "DOWN\n";
-            break;
         case VECTOR_LEFT:
-            std::cout << "LEFT\n";
+            x_velocity = -x_velocity;
             break;
         default:
             break;

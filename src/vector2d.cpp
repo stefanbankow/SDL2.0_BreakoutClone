@@ -26,7 +26,25 @@ Vector2D Vector2D::get_normalized_vector() const
     return Vector2D(x_comp, y_comp);
 }
 
+float Vector2D::dot_product(Vector2D vector1, Vector2D vector2)
+{
+
+    return (vector1.get_x() * vector2.get_x()) + (vector1.get_y() * vector2.get_y());
+}
+
 void Vector2D::print() const
 {
     std::cout << "Vector X: " << x << "\tVector Y: " << y << "\t Vector Length: " << length << "\n";
+}
+
+void Vector2D::set_x(float value)
+{
+    x = value;
+    length = sqrt(x * x + y * y);
+}
+
+void Vector2D::set_y(float value)
+{
+    y = value;
+    length = sqrt(x * x + y * y);
 }
