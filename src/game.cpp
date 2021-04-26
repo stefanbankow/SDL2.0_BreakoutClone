@@ -20,7 +20,7 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
             return;
         }
 
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
         if (renderer == nullptr)
         {
             std::cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << "\n";
