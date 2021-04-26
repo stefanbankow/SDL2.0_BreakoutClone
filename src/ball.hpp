@@ -5,6 +5,8 @@
 #include <iostream>
 
 #include "game_entity.hpp"
+#include "brick.hpp"
+#include "vector2d.hpp"
 
 class Ball : public GameEntity
 {
@@ -19,7 +21,7 @@ public:
     void move_with_platform(int platform_velocity);
     void release();
 
-    bool check_collision(GameEntity &entity) const;
+    bool check_brick_collision(Brick &entity);
 
     void set_location(int x, int y);
     void set_size(int width, int height);

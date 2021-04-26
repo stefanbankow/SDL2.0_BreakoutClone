@@ -17,7 +17,7 @@ public:
     void move();
     void handle_input(SDL_Event &e);
 
-    bool check_ball_collision(GameEntity &entity);
+    bool check_brick_collision(Brick &entity);
 
     void set_size(int width, int height) override;
 

@@ -105,14 +105,22 @@ void Game::handle_input()
 }
 void Game::update()
 {
-
-    for (int i = 0; i < brick_map->get_brick_count(); i++)
-    {
-        GameEntity *brick = brick_map->get_brick_at_index(i);
-        platform->check_ball_collision(*brick);
-    }
     if (platform != nullptr)
+    {
         platform->update();
+        if (brick_map != nullptr)
+        {
+            for (int i = 0; i < brick_map->get_brick_count(); i++)
+            {
+                Brick *brick = brick_map->get_brick_at_index(i);
+                if (platform->check_brick_collision(*brick))
+                {
+                    brick_map->destroy_brick_at_index(i);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void Game::render()

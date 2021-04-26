@@ -35,3 +35,12 @@ void BrickTileMap::render()
         brick->render();
     }
 }
+
+void BrickTileMap::destroy_brick_at_index(int index)
+{
+    if (index >= 0 && index < bricks.size())
+    {
+        delete bricks[index]; //Free up the memory
+        bricks.erase(bricks.begin() + index);
+    }
+}
