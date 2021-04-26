@@ -4,15 +4,15 @@
 Platform::Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int movement_speed)
     : GameEntity(texture_id, renderer, x_pos, y_pos)
 {
-    this->movement_speed = movement_speed > 0 ? movement_speed : 1; //Make sure its a positive value larger than 0
-
+    this->movement_speed = movement_speed > 0 ? movement_speed : 1; //Make sure its a positive value larger than 0 or make it 1 otherwise
     this->ball = new Ball(ball_texture_id, renderer, 0, 0, 2);
+
     ball->set_size(dst_w / 7, dst_w / 7);
 }
 Platform::Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int width, int height, int movement_speed)
     : GameEntity(texture_id, renderer, x_pos, y_pos, width, height)
 {
-    this->movement_speed = movement_speed > 0 ? movement_speed : 1;
+    this->movement_speed = movement_speed > 0 ? movement_speed : 1; //Make sure its a positive value larger than 0 or make it 1 otherwise
     this->ball = new Ball(ball_texture_id, renderer, 0, 0, 2);
 
     ball->set_size(dst_w / 7, dst_w / 7);
@@ -61,6 +61,7 @@ void Platform::handle_input(SDL_Event &e)
 
 void Platform::set_size(int width, int height)
 {
+    //Change the platform size on screen and adjust the ball accordingly
     dst_w = width;
     dst_h = height;
     if (ball != nullptr)

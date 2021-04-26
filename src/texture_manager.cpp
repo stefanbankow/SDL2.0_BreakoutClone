@@ -4,6 +4,7 @@ TextureManager *TextureManager::ptr_instance = nullptr;
 
 bool TextureManager::load_texture(std::string path, std::string id, SDL_Renderer *renderer)
 {
+    //Creates texture from surface
     SDL_Texture *new_texture = nullptr;
 
     SDL_Surface *tmp_surface = IMG_Load(path.c_str());

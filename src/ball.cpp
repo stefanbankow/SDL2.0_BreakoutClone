@@ -51,7 +51,7 @@ int distance_squared(int x1, int y1, int x2, int y2)
 
 bool Ball::check_brick_collision(Brick &entity)
 {
-    //We need the coordinates ot the center of the ball
+    //We need the coordinates to the center of the ball
     int ball_center_x = x_pos + dst_w / 2;
     int ball_center_y = y_pos + dst_h / 2;
     int other_entity_x = entity.get_x_pos();
@@ -61,7 +61,7 @@ bool Ball::check_brick_collision(Brick &entity)
 
     int closest_point_x, closest_point_y;
 
-    if (ball_center_x < other_entity_x) //if ball is to the left of other entity
+    if (ball_center_x < other_entity_x) //if the ball's center is to the left of other entity
     {
         closest_point_x = other_entity_x;
     }
@@ -71,28 +71,31 @@ bool Ball::check_brick_collision(Brick &entity)
     }
     else
     {
-        closest_point_x = ball_center_x; //if its' inside the other entity
+        closest_point_x = ball_center_x; //if it's inside the other entity
     }
 
-    if (ball_center_y < other_entity_y)
+    if (ball_center_y < other_entity_y) //Above
     {
         closest_point_y = other_entity_y;
     }
-    else if (ball_center_y > other_entity_y + other_entity_h)
+    else if (ball_center_y > other_entity_y + other_entity_h) //Below
     {
         closest_point_y = other_entity_y + other_entity_h;
     }
-    else
+    else //Inside
     {
         closest_point_y = ball_center_y;
     }
 
+    //Distance between the closest point of the brick and the ball's center
     int distance = distance_squared(ball_center_x, ball_center_y, closest_point_x, closest_point_y);
 
-    if (distance < (dst_w / 2) * (dst_w / 2)) //if distance is smaller than circle radius (closest point is inside circle)
+    if (distance < (dst_w / 2) * (dst_w / 2)) //if the distance is smaller than the ball's radius (closest point is inside ball)
     {
+        //Move the ball back 1 frame
         x_pos -= x_velocity;
         y_pos -= y_velocity;
+
         Vector2D directions[] = {
             Vector2D(0, -1),
             Vector2D(1, 0),

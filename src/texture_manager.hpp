@@ -14,10 +14,15 @@
 class TextureManager
 {
 public:
+    //Loads a texture from disk
     bool load_texture(std::string path, std::string id, SDL_Renderer *renderer);
+    //Draws an entire texture object to screen
     void draw(std::string id, SDL_Renderer *renderer, int x_pos, int y_pos, int src_w, int src_h, int dst_w = 0, int dst_h = 0);
+    //Draws only a part of the texture object (sprite sheet) to the screen
     void draw_frame(std::string id, SDL_Renderer *renderer, int x_pos, int y_pos, int frame_col, int frame_row, int src_w, int src_h, int dst_w = 0, int dst_h = 0);
+    //Clears the texture from the game
     void remove_texture(std::string id);
+    //Removes all textures
     void clear_all_textures();
 
     SDL_Texture *get_texture(std::string id);

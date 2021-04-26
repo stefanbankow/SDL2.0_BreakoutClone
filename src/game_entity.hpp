@@ -13,10 +13,14 @@ public:
     GameEntity(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int src_w, int src_h);
     virtual ~GameEntity();
 
-    //Wanted to put this in the constructor, but in my opining it made the constructor overrides too confusing
-    virtual void set_size(int dst_w, int dst_h);
+    //SDL-related
+
     virtual void update();
     virtual void render();
+
+    //Getters/Setters/Util
+
+    virtual void set_size(int dst_w, int dst_h); //Wanted to put this in the constructor, but in my opining it made the constructor overrides too confusing
     int get_desired_width() const { return dst_w; };
     int get_desired_height() const { return dst_h; };
     int get_x_pos() const { return x_pos; };

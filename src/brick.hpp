@@ -15,6 +15,8 @@ class Brick : public GameEntity
 {
 public:
     Brick(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int src_w, int src_h, int brick_type);
+
+    //Renders the correct frame of the sprite sheet
     void render() override;
 
 private:

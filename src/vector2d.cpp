@@ -17,6 +17,7 @@ Vector2D::Vector2D(float start_x, float start_y, float end_x, float end_y)
 
 Vector2D Vector2D::get_normalized_vector() const
 {
+
     float x_comp, y_comp;
 
     x_comp = x / length;
