@@ -8,15 +8,50 @@ enum Directions
     VECTOR_LEFT
 };
 
-Ball::Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int y_movement_speed) : GameEntity(texture_id, renderer, x_pos, y_pos)
+Ball::Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed, int y_movement_speed) : GameEntity(texture_id, renderer, x_pos, y_pos)
 {
-
+    this->platform_movement_speed = platform_movement_speed;
     this->y_movement_speed = y_movement_speed > 0 ? y_movement_speed : 1;
 }
 
 void Ball::update()
 {
     move();
+}
+
+void Ball::handle_input(SDL_Event &e)
+{
+    if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+    {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_a:
+            x_velocity -= platform_movement_speed;
+            break;
+        case SDLK_d:
+            x_velocity += platform_movement_speed;
+            break;
+        case SDLK_SPACE:
+            release();
+            break;
+        default:
+            break;
+        }
+    }
+    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+    {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_a:
+            x_velocity += platform_movement_speed;
+            break;
+        case SDLK_d:
+            x_velocity -= platform_movement_speed;
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 void Ball::move()
@@ -39,6 +74,10 @@ void Ball::move()
             y_velocity = -y_velocity;
         }
     }
+    else
+    {
+        x_pos += x_velocity;
+    }
 }
 
 int distance_squared(int x1, int y1, int x2, int y2)
@@ -49,7 +88,7 @@ int distance_squared(int x1, int y1, int x2, int y2)
     return deltaX * deltaX + deltaY * deltaY;
 }
 
-bool Ball::check_brick_collision(Brick &entity)
+bool Ball::check_brick_collision(Brick &entity, int &closest_point_x_var, int &closest_point_y_var)
 {
     //We need the coordinates to the center of the ball
     int ball_center_x = x_pos + dst_w / 2;
@@ -92,9 +131,8 @@ bool Ball::check_brick_collision(Brick &entity)
 
     if (distance < (dst_w / 2) * (dst_w / 2)) //if the distance is smaller than the ball's radius (closest point is inside ball)
     {
-        //I wanted to remove the code for handling the ball velocity upon impact out of this function entirely, as to satisfy the Single Responsibility Principle,
-        //but I couldn't find a simple enough method to do it without rewriting the code for finding the closest point coordinates once again, so I decided to leave it here
-        handle_brick_collision(entity, closest_point_x, closest_point_y);
+        closest_point_x_var = closest_point_x;
+        closest_point_y_var = closest_point_y;
         return true;
     }
 
@@ -136,7 +174,7 @@ void Ball::handle_brick_collision(Brick &entity, int closest_point_x, int closes
     {
 
         float dot_product = Vector2D::dot_product(normalized_vector, directions[i]);
-        std::cout << "Dot product of " << i << ": " << dot_product << "\n";
+
         if (dot_product > max)
         {
             //The higher the dot product of between the vector and the direction, the smaller the angle between them. (Dot product of angle means angle of 0 degress)
@@ -145,10 +183,6 @@ void Ball::handle_brick_collision(Brick &entity, int closest_point_x, int closes
             direction_index = i;
         }
     }
-
-    std::cout << "Direction normalized: ";
-    normalized_vector.print();
-    std::cout << "\n";
 
     switch (direction_index)
     {
@@ -162,14 +196,6 @@ void Ball::handle_brick_collision(Brick &entity, int closest_point_x, int closes
         break;
     default:
         break;
-    }
-}
-
-void Ball::move_with_platform(int platform_velocity)
-{
-    if (!released)
-    {
-        x_pos += platform_velocity;
     }
 }
 

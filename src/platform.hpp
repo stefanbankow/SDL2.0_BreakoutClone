@@ -11,9 +11,9 @@ class Platform : public GameEntity
 {
 public:
     //Create a platform with the size of the given texture
-    Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int movement_speed = 0, int ball_movement_speed = 0);
+    Platform(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int movement_speed = 0);
     //Create a platform with a custom size
-    Platform(std::string texture_id, std::string ball_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int width, int height, int movement_speed = 0, int ball_movement_speed = 0);
+    Platform(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int width, int height, int movement_speed = 0);
     ~Platform();
 
     //Move based on current x_vel value
@@ -23,6 +23,7 @@ public:
 
     //Wrapper function for calling the check_collision function of the ball object
     bool check_brick_collision(Brick &entity);
+    bool check_ball_collision();
 
     //SDL-related
 
@@ -36,6 +37,5 @@ public:
 private:
     int movement_speed;
     int x_vel = 0;
-    Ball *ball;
 };
 #endif

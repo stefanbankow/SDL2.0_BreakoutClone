@@ -5,6 +5,7 @@
 #include "texture_manager.hpp"
 
 Platform *platform = nullptr;
+Ball *ball = nullptr;
 BrickTileMap *brick_map = nullptr;
 
 void Game::init(const char *title, int width, int height, bool fullscreen, int x_pos, int y_pos)
@@ -79,8 +80,15 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
         int platform_x_pos = width / 2 - width / 14;
         int platform_y_pos = height - 50;
 
-        platform = new Platform("platform", "ball", renderer, platform_x_pos, platform_y_pos, 128, 16, 2, 5);
+        platform = new Platform("platform", renderer, platform_x_pos, platform_y_pos, 128, 16, 2);
         platform->set_size(platform_dst_w, platform_dst_h);
+
+        int ball_dst_w = platform_dst_w / 7;
+        int ball_x_pos = platform_x_pos + platform_dst_w / 2 - ball_dst_w / 2;
+        int ball_y_pos = platform_y_pos - 10 - ball_dst_w;
+
+        ball = new Ball("ball", renderer, ball_x_pos, ball_y_pos, platform->get_movement_speed(), 5);
+        ball->set_size(ball_dst_w, ball_dst_w);
 
         brick_map = new BrickTileMap("bricks", renderer, brickArray, 3, 10, 128, 64);
     }
@@ -102,24 +110,34 @@ void Game::handle_input()
 
     if (platform != nullptr)
         platform->handle_input(e);
+
+    if (ball != nullptr)
+        ball->handle_input(e);
 }
 void Game::update()
 {
     if (platform != nullptr)
-    {
         platform->update();
-        if (brick_map != nullptr)
+
+    if (brick_map != nullptr && ball != nullptr)
+    {
+        for (int i = 0; i < brick_map->get_brick_count(); i++)
         {
-            for (int i = 0; i < brick_map->get_brick_count(); i++)
+            int closest_point_x = 0;
+            int closest_point_y = 0;
+
+            Brick *brick = brick_map->get_brick_at_index(i);
+            if (ball->check_brick_collision(*brick, closest_point_x, closest_point_y))
             {
-                Brick *brick = brick_map->get_brick_at_index(i);
-                if (platform->check_brick_collision(*brick))
-                {
-                    brick_map->destroy_brick_at_index(i);
-                    break;
-                }
+                std::cout << closest_point_x << "\t" << closest_point_y << "\n";
+
+                ball->handle_brick_collision(*brick, closest_point_x, closest_point_y);
+
+                brick_map->destroy_brick_at_index(i);
+                break;
             }
         }
+        ball->update();
     }
 }
 
@@ -133,6 +151,9 @@ void Game::render()
     if (platform != nullptr)
         platform->render();
 
+    if (ball != nullptr)
+        ball->render();
+
     SDL_RenderPresent(renderer);
 }
 
@@ -142,6 +163,9 @@ void Game::clean()
 
     delete platform;
     platform = nullptr;
+
+    delete ball;
+    ball = nullptr;
 
     delete brick_map;
     brick_map = nullptr;
