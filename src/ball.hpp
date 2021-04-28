@@ -11,18 +11,18 @@
 class Ball : public GameEntity
 {
 public:
-    Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed, int y_movement_speed = 0);
+    Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed = 0, int y_movement_speed = 0);
 
     /////SDL-related
 
-    void update() override;
+    void update(int platform_width);
     //Handles input for moving the ball while it's still attached to the platform and for releasing the ball
     void handle_input(SDL_Event &e);
 
     //////Movement
 
     //Moves the ball
-    void move();
+    void move(int platform_width);
 
     //Releases the ball in a random direction
     void release();
@@ -50,6 +50,7 @@ public:
 
 private:
     int platform_movement_speed;
+
     int y_movement_speed;
 
     bool released = false;

@@ -14,9 +14,9 @@ Ball::Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos,
     this->y_movement_speed = y_movement_speed > 0 ? y_movement_speed : 1;
 }
 
-void Ball::update()
+void Ball::update(int platform_width)
 {
-    move();
+    move(platform_width);
 }
 
 void Ball::handle_input(SDL_Event &e)
@@ -54,12 +54,12 @@ void Ball::handle_input(SDL_Event &e)
     }
 }
 
-void Ball::move()
+void Ball::move(int platform_width)
 {
+    int screen_width, screen_height;
+    SDL_GetRendererOutputSize(get_renderer(), &screen_width, &screen_height);
     if (released)
     {
-        int screen_width, screen_height;
-        SDL_GetRendererOutputSize(get_renderer(), &screen_width, &screen_height);
         x_pos += x_velocity;
         y_pos += y_velocity;
         if (x_pos < 0 || x_pos + dst_w > screen_width)
@@ -77,6 +77,11 @@ void Ball::move()
     else
     {
         x_pos += x_velocity;
+
+        if (x_pos < platform_width / 2 - dst_w / 2 || x_pos + dst_w > screen_width - platform_width / 2 + dst_w / 2)
+        {
+            x_pos -= x_velocity;
+        }
     }
 }
 

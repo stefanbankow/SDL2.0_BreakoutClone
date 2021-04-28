@@ -117,27 +117,28 @@ void Game::handle_input()
 void Game::update()
 {
     if (platform != nullptr)
+    {
         platform->update();
 
-    if (brick_map != nullptr && ball != nullptr)
-    {
-        for (int i = 0; i < brick_map->get_brick_count(); i++)
+        if (brick_map != nullptr && ball != nullptr)
         {
-            int closest_point_x = 0;
-            int closest_point_y = 0;
-
-            Brick *brick = brick_map->get_brick_at_index(i);
-            if (ball->check_brick_collision(*brick, closest_point_x, closest_point_y))
+            for (int i = 0; i < brick_map->get_brick_count(); i++)
             {
-                std::cout << closest_point_x << "\t" << closest_point_y << "\n";
+                int closest_point_x = 0;
+                int closest_point_y = 0;
 
-                ball->handle_brick_collision(*brick, closest_point_x, closest_point_y);
+                Brick *brick = brick_map->get_brick_at_index(i);
+                if (ball->check_brick_collision(*brick, closest_point_x, closest_point_y))
+                {
 
-                brick_map->destroy_brick_at_index(i);
-                break;
+                    ball->handle_brick_collision(*brick, closest_point_x, closest_point_y);
+
+                    brick_map->destroy_brick_at_index(i);
+                    break;
+                }
             }
+            ball->update(platform->get_desired_width());
         }
-        ball->update();
     }
 }
 
