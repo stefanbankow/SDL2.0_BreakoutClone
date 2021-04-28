@@ -27,8 +27,11 @@ public:
     //Releases the ball in a random direction
     void release();
 
-    //Checks if the ball is colliding with the given brick and destroys it if true
+    //Checks if the ball is colliding with the given brick
     bool check_brick_collision(Brick &entity);
+
+    //Changes the ball's velocity depending on the point of impact
+    void handle_brick_collision(Brick &entity, int closest_point_x, int closest_point_y);
 
     //Getters/Setters/Util
 
