@@ -3,8 +3,8 @@
 enum Directions
 {
     VECTOR_UP,
-    VECTOR_RIGHT,
     VECTOR_DOWN,
+    VECTOR_RIGHT,
     VECTOR_LEFT
 };
 
@@ -14,42 +14,50 @@ Ball::Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos,
     this->y_movement_speed = y_movement_speed > 0 ? y_movement_speed : 1;
 }
 
-void Ball::update(int platform_width)
+void Ball::update(Platform &entity)
 {
-    move(platform_width);
+    int closest_point_x, closest_point_y;
+    if (check_brick_collision(entity, closest_point_x, closest_point_y))
+    {
+        handle_platform_collision();
+    }
+    move(entity.get_desired_width());
 }
 
 void Ball::handle_input(SDL_Event &e)
 {
-    if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+    if (!released)
     {
-        switch (e.key.keysym.sym)
+        if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
         {
-        case SDLK_a:
-            x_velocity -= platform_movement_speed;
-            break;
-        case SDLK_d:
-            x_velocity += platform_movement_speed;
-            break;
-        case SDLK_SPACE:
-            release();
-            break;
-        default:
-            break;
+            switch (e.key.keysym.sym)
+            {
+            case SDLK_a:
+                x_velocity -= platform_movement_speed;
+                break;
+            case SDLK_d:
+                x_velocity += platform_movement_speed;
+                break;
+            case SDLK_SPACE:
+                release();
+                break;
+            default:
+                break;
+            }
         }
-    }
-    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-    {
-        switch (e.key.keysym.sym)
+        else if (e.type == SDL_KEYUP && e.key.repeat == 0)
         {
-        case SDLK_a:
-            x_velocity += platform_movement_speed;
-            break;
-        case SDLK_d:
-            x_velocity -= platform_movement_speed;
-            break;
-        default:
-            break;
+            switch (e.key.keysym.sym)
+            {
+            case SDLK_a:
+                x_velocity += platform_movement_speed;
+                break;
+            case SDLK_d:
+                x_velocity -= platform_movement_speed;
+                break;
+            default:
+                break;
+            }
         }
     }
 }
@@ -93,7 +101,7 @@ int distance_squared(int x1, int y1, int x2, int y2)
     return deltaX * deltaX + deltaY * deltaY;
 }
 
-bool Ball::check_brick_collision(Brick &entity, int &closest_point_x_var, int &closest_point_y_var)
+bool Ball::check_brick_collision(GameEntity &entity, int &closest_point_x_var, int &closest_point_y_var)
 {
     //We need the coordinates to the center of the ball
     int ball_center_x = x_pos + dst_w / 2;
@@ -152,8 +160,8 @@ void Ball::handle_brick_collision(Brick &entity, int closest_point_x, int closes
 
     Vector2D directions[] = {
         Vector2D(0, -1),
-        Vector2D(1, 0),
         Vector2D(0, 1),
+        Vector2D(1, 0),
         Vector2D(-1, 0),
     };
 
@@ -201,6 +209,14 @@ void Ball::handle_brick_collision(Brick &entity, int closest_point_x, int closes
         break;
     default:
         break;
+    }
+}
+
+void Ball::handle_platform_collision()
+{
+    if (y_velocity > 0) //Only change the velocity if the ball is going down
+    {
+        y_velocity = -y_velocity;
     }
 }
 

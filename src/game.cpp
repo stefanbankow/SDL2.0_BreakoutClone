@@ -1,6 +1,6 @@
 #include "game.hpp"
 #include "platform.hpp"
-#include "game.hpp"
+#include "ball.hpp"
 #include "brick_tile_map.hpp"
 #include "texture_manager.hpp"
 
@@ -80,7 +80,7 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
         int platform_x_pos = width / 2 - width / 14;
         int platform_y_pos = height - 50;
 
-        platform = new Platform("platform", renderer, platform_x_pos, platform_y_pos, 128, 16, 2);
+        platform = new Platform("platform", renderer, platform_x_pos, platform_y_pos, 128, 16, 10);
         platform->set_size(platform_dst_w, platform_dst_h);
 
         int ball_dst_w = platform_dst_w / 7;
@@ -134,10 +134,10 @@ void Game::update()
                     ball->handle_brick_collision(*brick, closest_point_x, closest_point_y);
 
                     brick_map->destroy_brick_at_index(i);
-                    break;
+                    break; //Break loop to prevent collisions with multiple bricks within the same frame
                 }
             }
-            ball->update(platform->get_desired_width());
+            ball->update(*platform);
         }
     }
 }

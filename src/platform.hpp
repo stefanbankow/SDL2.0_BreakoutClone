@@ -5,7 +5,6 @@
 #include <SDL2/SDL.h>
 
 #include "game_entity.hpp"
-#include "ball.hpp"
 
 class Platform : public GameEntity
 {
@@ -20,10 +19,6 @@ public:
     void move();
     //Change x_vel based on input
     void handle_input(SDL_Event &e);
-
-    //Wrapper function for calling the check_collision function of the ball object
-    bool check_brick_collision(Brick &entity);
-    bool check_ball_collision();
 
     //SDL-related
 

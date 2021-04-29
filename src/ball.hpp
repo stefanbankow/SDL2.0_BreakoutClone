@@ -1,11 +1,13 @@
 #ifndef BALL_HPP
 #define BALL_HPP
+
 #include <string>
 #include <random>
 #include <iostream>
-
-#include "game_entity.hpp"
+#include "platform.hpp"
 #include "brick.hpp"
+#include "game_entity.hpp"
+
 #include "vector2d.hpp"
 
 class Ball : public GameEntity
@@ -15,7 +17,8 @@ public:
 
     /////SDL-related
 
-    void update(int platform_width);
+    //Moves the ball and checks if it has collided with the platform
+    void update(Platform &entity);
     //Handles input for moving the ball while it's still attached to the platform and for releasing the ball
     void handle_input(SDL_Event &e);
 
@@ -30,10 +33,13 @@ public:
     ////Collisions
 
     //Checks if the ball is colliding with the given brick and sets the coordinates of the closest point on the brick if they do
-    bool check_brick_collision(Brick &entity, int &closest_point_x, int &closest_point_y);
+    bool check_brick_collision(GameEntity &entity, int &closest_point_x, int &closest_point_y);
 
     //Changes the ball's velocity depending on the point of impact
     void handle_brick_collision(Brick &entity, int closest_point_x, int closest_point_y);
+
+    //Send the ball back up upon collision with the platform
+    void handle_platform_collision();
 
     //////Getters/Setters/Util
 
