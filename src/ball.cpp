@@ -17,9 +17,9 @@ Ball::Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos,
 void Ball::update(Platform &entity)
 {
     int closest_point_x, closest_point_y;
-    if (check_brick_collision(entity, closest_point_x, closest_point_y))
+    if (check_collision(entity, closest_point_x, closest_point_y))
     {
-        handle_platform_collision();
+        handle_platform_collision(entity, closest_point_x, closest_point_y);
     }
     move(entity.get_desired_width());
 }
@@ -101,8 +101,11 @@ int distance_squared(int x1, int y1, int x2, int y2)
     return deltaX * deltaX + deltaY * deltaY;
 }
 
-bool Ball::check_brick_collision(GameEntity &entity, int &closest_point_x_var, int &closest_point_y_var)
+bool Ball::check_collision(GameEntity &entity, int &closest_point_x_var, int &closest_point_y_var)
 {
+    //We use references to some external variables for the closest point coordinates, so that we can use those external variables as parameters in the collision handling functions
+    //without having to re-do those checks
+
     //We need the coordinates to the center of the ball
     int ball_center_x = x_pos + dst_w / 2;
     int ball_center_y = y_pos + dst_h / 2;
@@ -212,10 +215,23 @@ void Ball::handle_brick_collision(Brick &entity, int closest_point_x, int closes
     }
 }
 
-void Ball::handle_platform_collision()
+void Ball::handle_platform_collision(Platform &entity, int closest_point_x, int closest_point_y)
 {
-    if (y_velocity > 0) //Only change the velocity if the ball is going down
+    if (y_velocity > 0) //Only change the velocity if the ball is going down to prevent the ball from getting stuck inside the platform at high platform speeds
     {
+        int platform_x_pos = entity.get_x_pos();
+        int platform_width = entity.get_desired_width();
+        int platform_velocity = entity.get_x_velocity();
+
+        //If the ball was going left and falls on the right side of the platform, while the platform is going right it will get sent back in the opposite direction
+        //Same goes for the left side
+        bool hard_impact_right = closest_point_x >= platform_x_pos + (platform_width - platform_width / 3) && platform_velocity > 0 && x_velocity < 0;
+        bool hard_impact_left = closest_point_x <= platform_x_pos + platform_width / 3 && platform_velocity < 0 && x_velocity > 0;
+        if (hard_impact_left || hard_impact_right)
+        {
+            x_velocity = -x_velocity;
+        }
+
         y_velocity = -y_velocity;
     }
 }

@@ -33,13 +33,13 @@ public:
     ////Collisions
 
     //Checks if the ball is colliding with the given brick and sets the coordinates of the closest point on the brick if they do
-    bool check_brick_collision(GameEntity &entity, int &closest_point_x, int &closest_point_y);
+    bool check_collision(GameEntity &entity, int &closest_point_x, int &closest_point_y);
 
     //Changes the ball's velocity depending on the point of impact
     void handle_brick_collision(Brick &entity, int closest_point_x, int closest_point_y);
 
     //Send the ball back up upon collision with the platform
-    void handle_platform_collision();
+    void handle_platform_collision(Platform &platform, int closest_point_x, int closest_point_y);
 
     //////Getters/Setters/Util
 

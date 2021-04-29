@@ -27,6 +27,7 @@ public:
 
     //Getters/Setters/Util
     int get_movement_speed() const { return movement_speed; }
+    int get_x_velocity() const { return x_vel; };
     void set_size(int width, int height) override;
 
 private:

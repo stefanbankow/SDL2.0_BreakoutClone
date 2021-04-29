@@ -128,7 +128,7 @@ void Game::update()
                 int closest_point_y = 0;
 
                 Brick *brick = brick_map->get_brick_at_index(i);
-                if (ball->check_brick_collision(*brick, closest_point_x, closest_point_y))
+                if (ball->check_collision(*brick, closest_point_x, closest_point_y))
                 {
 
                     ball->handle_brick_collision(*brick, closest_point_x, closest_point_y);
