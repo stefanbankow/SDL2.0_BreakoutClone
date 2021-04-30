@@ -76,10 +76,14 @@ void Ball::move(int platform_width)
             x_velocity = -x_velocity;
         }
 
-        if (y_pos < 0 || y_pos + dst_h > screen_height) //Check only for top of screen
+        if (y_pos < 0) //Check only for top of screen
         {
             y_pos -= y_velocity;
             y_velocity = -y_velocity;
+        }
+        else if (y_pos > screen_height)
+        {
+            out_of_bounds = true;
         }
     }
     else

@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include "level.hpp"
 
 class Game
 {
@@ -18,10 +19,17 @@ public:
     void render();
     //Clean the assets used by the game
     void clean();
+
+    bool load_level(std::string level_file_path, int platform_movement_speed, int ball_movement_speed);
+
     bool is_game_running() { return is_running; };
 
 private:
     bool is_running;
+    bool level_playing = false;
+    int window_width;
+    int window_height;
+    Level *level = nullptr;
     SDL_Window *window;
     SDL_Renderer *renderer;
 };

@@ -53,6 +53,7 @@ public:
     void set_y_velocity(int velocity) { y_velocity = velocity; }
 
     bool is_released() const { return released; }
+    bool is_out_of_bounds() const { return out_of_bounds; }
 
 private:
     int platform_movement_speed;
@@ -60,6 +61,7 @@ private:
     int y_movement_speed;
 
     bool released = false;
+    bool out_of_bounds = false;
     int x_velocity = 0;
     int y_velocity = 0;
 };

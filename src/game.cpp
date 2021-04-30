@@ -1,8 +1,5 @@
 #include "game.hpp"
-#include "level.hpp"
 #include "texture_manager.hpp"
-
-Level *level = nullptr;
 
 void Game::init(const char *title, int width, int height, bool fullscreen, int x_pos, int y_pos)
 {
@@ -32,13 +29,16 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
             return;
         }
         std::cout << "Successfully initialized game!\n";
+
         is_running = true;
+        this->window_width = width;
+        this->window_height = height;
 
         TextureManager::get_instance()->load_texture("assets/platform.png", "platform", renderer);
         TextureManager::get_instance()->load_texture("assets/bricks.png", "bricks", renderer);
         TextureManager::get_instance()->load_texture("assets/ball.png", "ball", renderer);
 
-        level = new Level("assets/levels/level_2.txt", renderer, width, height, 5, 4);
+        load_level("assets/levels/level_2.txt", 6, 3);
     }
     else
     {
@@ -61,7 +61,14 @@ void Game::handle_input()
 }
 void Game::update()
 {
-    level->update();
+    if (level != nullptr)
+    {
+        level->update();
+        if (level->is_failed())
+        {
+            load_level("assets/levels/level_2.txt", 6, 3);
+        }
+    }
 }
 
 void Game::render()
@@ -74,9 +81,26 @@ void Game::render()
     SDL_RenderPresent(renderer);
 }
 
+bool Game::load_level(std::string level_file_path, int platform_movement_speed, int ball_movement_speed)
+{
+    if (level != nullptr)
+    {
+        delete level; //For memory safety make sure the previous level is deleted
+        level = nullptr;
+    }
+
+    level = new Level(level_file_path, renderer, window_width, window_height, platform_movement_speed, ball_movement_speed);
+
+    if (level != nullptr) //if memory allocation was successful
+        return level->is_successfully_loaded();
+
+    return false;
+}
+
 void Game::clean()
 {
     TextureManager::clean_instance();
+
     delete level;
     level = nullptr;
 

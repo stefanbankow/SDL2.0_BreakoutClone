@@ -11,7 +11,8 @@ BrickTileMap::~BrickTileMap()
 {
     for (auto brick : bricks)
     {
-        delete brick;
+        if (brick != nullptr)
+            delete brick;
     }
     bricks.clear();
 }
@@ -49,7 +50,8 @@ void BrickTileMap::destroy_brick_at_index(int index)
 {
     if (index >= 0 && index < bricks.size())
     {
-        delete bricks[index]; //Free up the memory
+        if (bricks[index] != nullptr)
+            delete bricks[index]; //Free up the memory
         bricks.erase(bricks.begin() + index);
     }
 }
