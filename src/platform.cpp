@@ -23,16 +23,23 @@ void Platform::handle_input(SDL_Event &e)
         switch (e.key.keysym.sym)
         {
         case SDLK_a:
+            touched = true;
             x_vel -= movement_speed;
             break;
         case SDLK_d:
+            touched = true;
             x_vel += movement_speed;
             break;
         default:
             break;
         }
     }
-    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+    /*We have to check if the platform/ball was moved (the "touched flag") before resetting the velocity, because otherwise a bug occurs
+    where the platform starts moving on its own towards one side of the screen if the level gets reset while the player is pressing A/D. This happens
+    because when the ball reaches the bottom of the screen while the player is pressing A/D, a new instance of the platform/ball is created and when the A/D key is released
+    the velocity becomes 0+movement speed or 0-movement speed and it becomes impossible to move the ball in one direction and it moves twice as fast in the other.
+    There are other fixes to this problem, such as setting the x_velocity to 0 instead of doing subtraction/addition, but this makes the controls way less smooth and unnatural*/
+    else if (e.type == SDL_KEYUP && e.key.repeat == 0 && touched)
     {
         switch (e.key.keysym.sym)
         {
