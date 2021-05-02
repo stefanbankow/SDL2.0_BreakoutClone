@@ -1,7 +1,7 @@
 #ifndef BRICK_HPP
 #define BRICK_HPP
 #include "game_entity.hpp"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <string>
 
 enum BrickTextures

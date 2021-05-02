@@ -2,7 +2,7 @@
 #define PLATFORM_HPP
 
 #include <string>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "game_entity.hpp"
 

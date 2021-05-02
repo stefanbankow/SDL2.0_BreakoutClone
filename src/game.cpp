@@ -6,6 +6,7 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
     int flags = fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
+
         window = SDL_CreateWindow(title, x_pos, y_pos, width, height, flags);
         if (window == nullptr)
         {
@@ -28,6 +29,7 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
             is_running = false;
             return;
         }
+
         std::cout << "Successfully initialized game!\n";
 
         is_running = true;

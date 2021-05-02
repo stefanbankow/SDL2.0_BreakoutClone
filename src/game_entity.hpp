@@ -1,6 +1,6 @@
 #ifndef GAME_ENTITY_HPP
 #define GAME_ENTITY_HPP
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <string>
 #include <iostream>
 

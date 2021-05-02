@@ -1,6 +1,6 @@
 #ifndef BRICK_MAP_HPP
 #define BRICK_MAP_HPP
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <vector>
 #include <string>
 #include "brick.hpp"
