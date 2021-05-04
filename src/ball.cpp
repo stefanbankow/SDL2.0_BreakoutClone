@@ -33,11 +33,11 @@ void Ball::handle_input(SDL_Event &e)
             switch (e.key.keysym.sym)
             {
             case SDLK_a:
-                touched = true;
+                touched_a = true;
                 x_velocity -= platform_movement_speed;
                 break;
             case SDLK_d:
-                touched = true;
+                touched_d = true;
                 x_velocity += platform_movement_speed;
                 break;
             case SDLK_SPACE:
@@ -47,17 +47,17 @@ void Ball::handle_input(SDL_Event &e)
                 break;
             }
         }
-        else if (e.type == SDL_KEYUP && e.key.repeat == 0 && touched)
+        else if (e.type == SDL_KEYUP && e.key.repeat == 0)
         {
             switch (e.key.keysym.sym)
             {
             case SDLK_a:
-
-                x_velocity += platform_movement_speed;
+                if (touched_a)
+                    x_velocity += platform_movement_speed;
                 break;
             case SDLK_d:
-
-                x_velocity -= platform_movement_speed;
+                if (touched_d)
+                    x_velocity -= platform_movement_speed;
                 break;
             default:
                 break;

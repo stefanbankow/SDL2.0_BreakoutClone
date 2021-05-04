@@ -61,7 +61,8 @@ private:
     int y_movement_speed;
 
     bool released = false;
-    bool touched = false;
+    bool touched_a = false;
+    bool touched_d = false;
     bool out_of_bounds = false;
     int x_velocity = 0;
     int y_velocity = 0;

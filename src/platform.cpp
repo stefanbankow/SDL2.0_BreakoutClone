@@ -23,11 +23,11 @@ void Platform::handle_input(SDL_Event &e)
         switch (e.key.keysym.sym)
         {
         case SDLK_a:
-            touched = true;
+            touched_a = true;
             x_vel -= movement_speed;
             break;
         case SDLK_d:
-            touched = true;
+            touched_d = true;
             x_vel += movement_speed;
             break;
         default:
@@ -39,15 +39,17 @@ void Platform::handle_input(SDL_Event &e)
     because when the ball reaches the bottom of the screen while the player is pressing A/D, a new instance of the platform/ball is created and when the A/D key is released
     the velocity becomes 0+movement speed or 0-movement speed and it becomes impossible to move the ball in one direction and it moves twice as fast in the other.
     There are other fixes to this problem, such as setting the x_velocity to 0 instead of doing subtraction/addition, but this makes the controls way less smooth and unnatural*/
-    else if (e.type == SDL_KEYUP && e.key.repeat == 0 && touched)
+    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
     {
         switch (e.key.keysym.sym)
         {
         case SDLK_a:
-            x_vel += movement_speed;
+            if (touched_a)
+                x_vel += movement_speed;
             break;
         case SDLK_d:
-            x_vel -= movement_speed;
+            if (touched_d)
+                x_vel -= movement_speed;
             break;
         default:
             break;

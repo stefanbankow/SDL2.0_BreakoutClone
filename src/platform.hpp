@@ -31,7 +31,8 @@ public:
     void set_size(int width, int height) override;
 
 private:
-    bool touched = false;
+    bool touched_a = false;
+    bool touched_d = false;
     int movement_speed;
     int x_vel = 0;
 };
