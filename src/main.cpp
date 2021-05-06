@@ -4,7 +4,7 @@ int main(int argc, char *args[])
     const int FPS_CAP = 60;
     const int SCREEN_TICKS_PER_FRAME = 1000 / FPS_CAP;
     Game game;
-    game.init("Game title", 1280, 720, false);
+    game.init("Breakout Clone", 1280, 720, false);
     while (game.is_game_running())
     {
         int initial_ticks = SDL_GetTicks(); //Ticks at the start of frame
