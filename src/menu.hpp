@@ -53,6 +53,4 @@ private:
     SDL_Color active_item_color;
 };
 
-
-
 #endif
