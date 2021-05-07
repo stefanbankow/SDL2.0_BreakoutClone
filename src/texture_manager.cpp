@@ -30,7 +30,10 @@ bool TextureManager::load_texture(std::string path, std::string id, SDL_Renderer
 
 SDL_Texture *TextureManager::get_texture(std::string id)
 {
-    return textures_map.find(id)->second; //This used to be return textures_map[id], but I've since found out that it inserts a new element in the map which is undesired behaviour
+    SDL_Texture *texture = textures_map.find(id)->second;
+    if (texture == nullptr)
+        std::cout << "Texture with ID: \"" << id << "\" could not be found!\n";
+    return texture; //This used to be return textures_map[id], but I've since found out that it inserts a new element in the map which is undesired behaviour
 }
 
 void TextureManager::draw(SDL_Texture *texture, SDL_Renderer *renderer, int x_pos, int y_pos, int src_w, int src_h, int dst_w, int dst_h)

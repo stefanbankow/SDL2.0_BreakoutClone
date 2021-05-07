@@ -4,16 +4,20 @@
 #include <string>
 #include <random>
 #include <iostream>
+
 #include "platform.hpp"
 #include "brick.hpp"
+#include "particle.hpp"
 #include "game_entity.hpp"
-
 #include "vector2d.hpp"
+
+const int PARTICLE_COUNT = 20;
 
 class Ball : public GameEntity
 {
 public:
-    Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed = 0, int y_movement_speed = 0);
+    Ball(std::string texture_id, std::string particle_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed, int y_movement_speed);
+    ~Ball();
 
     /////SDL-related
 
@@ -21,6 +25,8 @@ public:
     void update(Platform &entity);
     //Handles input for moving the ball while it's still attached to the platform and for releasing the ball
     void handle_input(SDL_Event &e);
+    //Renders the ball and checks for old particles to be destroyed
+    void render() override;
 
     //////Movement
 
@@ -56,6 +62,9 @@ public:
     bool is_out_of_bounds() const { return out_of_bounds; }
 
 private:
+    Particle *particles[PARTICLE_COUNT];
+    SDL_Texture *particle_texture = nullptr;
+
     int platform_movement_speed;
 
     int y_movement_speed;

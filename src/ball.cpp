@@ -8,10 +8,26 @@ enum Directions
     VECTOR_LEFT
 };
 
-Ball::Ball(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed, int y_movement_speed) : GameEntity(texture_id, renderer, x_pos, y_pos)
+Ball::Ball(std::string texture_id, std::string particle_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed, int y_movement_speed)
+    : GameEntity(texture_id, renderer, x_pos, y_pos)
 {
     this->platform_movement_speed = platform_movement_speed;
     this->y_movement_speed = y_movement_speed > 0 ? y_movement_speed : 1;
+    particle_texture = TextureManager::get_instance()->get_texture(particle_texture_id);
+
+    for (int i = 0; i < PARTICLE_COUNT; i++)
+    {
+        particles[i] = new Particle(particle_texture, x_pos, y_pos, 12, 5, 5);
+    }
+}
+
+Ball::~Ball()
+{
+    for (int i = 0; i < PARTICLE_COUNT; i++)
+    {
+        if (particles[i] != nullptr)
+            delete particles[i];
+    }
 }
 
 void Ball::update(Platform &entity)
@@ -22,6 +38,27 @@ void Ball::update(Platform &entity)
         handle_platform_collision(entity, closest_point_x, closest_point_y);
     }
     move(entity.get_desired_width());
+}
+
+void Ball::render()
+{
+
+    for (int i = 0; i < PARTICLE_COUNT; ++i)
+    {
+        //Delete and replace dead particles
+        if (particles[i] != nullptr && particles[i]->should_be_destroyed())
+        {
+            delete particles[i];
+            particles[i] = new Particle(particle_texture, x_pos, y_pos, 12, 5, 5);
+        }
+    }
+
+    for (int i = 0; i < PARTICLE_COUNT; ++i)
+    {
+        particles[i]->render(get_renderer());
+    }
+    //Render ball on top of particles
+    TextureManager::get_instance()->draw(get_texture(), get_renderer(), x_pos, y_pos, src_w, src_h, dst_w, dst_h);
 }
 
 void Ball::handle_input(SDL_Event &e)

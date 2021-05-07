@@ -50,6 +50,7 @@ void Game::init(const char *title, int width, int height, bool fullscreen, int x
         TextureManager::get_instance()->load_texture("assets/platform.png", "platform", renderer);
         TextureManager::get_instance()->load_texture("assets/bricks.png", "bricks", renderer);
         TextureManager::get_instance()->load_texture("assets/ball.png", "ball", renderer);
+        TextureManager::get_instance()->load_texture("assets/particles.png", "particles", renderer);
 
         menu_title_font = TTF_OpenFont("assets/fonts/arial.ttf", 200);
         menu_item_font = TTF_OpenFont("assets/fonts/arial.ttf", 40);

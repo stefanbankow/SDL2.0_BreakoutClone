@@ -104,7 +104,7 @@ bool Level::load(SDL_Renderer *renderer, int screen_width, int screen_height)
         int ball_x_pos = platform_x_pos + platform_dst_w / 2 - ball_dst_w / 2;
         int ball_y_pos = platform_y_pos - 10 - ball_dst_w;
 
-        ball = new Ball("ball", renderer, ball_x_pos, ball_y_pos, platform_movement_speed, ball_movement_speed);
+        ball = new Ball("ball", "particles", renderer, ball_x_pos, ball_y_pos, platform_movement_speed, ball_movement_speed);
         ball->set_size(ball_dst_w, ball_dst_w);
 
         level_file.close();
