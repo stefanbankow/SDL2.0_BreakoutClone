@@ -30,10 +30,10 @@ bool TextureManager::load_texture(std::string path, std::string id, SDL_Renderer
 
 SDL_Texture *TextureManager::get_texture(std::string id)
 {
-    return textures_map[id];
+    return textures_map.find(id)->second; //This used to be return textures_map[id], but I've since found out that it inserts a new element in the map which is undesired behaviour
 }
 
-void TextureManager::draw(std::string id, SDL_Renderer *renderer, int x_pos, int y_pos, int src_w, int src_h, int dst_w, int dst_h)
+void TextureManager::draw(SDL_Texture *texture, SDL_Renderer *renderer, int x_pos, int y_pos, int src_w, int src_h, int dst_w, int dst_h)
 {
     SDL_Rect src_rect;
     src_rect.x = src_rect.y = 0;
@@ -45,10 +45,10 @@ void TextureManager::draw(std::string id, SDL_Renderer *renderer, int x_pos, int
     dst_rect.y = y_pos;
     dst_rect.w = dst_w;
     dst_rect.h = dst_h;
-    SDL_RenderCopy(renderer, textures_map[id], &src_rect, &dst_rect);
+    SDL_RenderCopy(renderer, texture, &src_rect, &dst_rect);
 }
 
-void TextureManager::draw_frame(std::string id, SDL_Renderer *renderer, int x_pos, int y_pos, int frame_col, int frame_row, int src_w, int src_h, int dst_w, int dst_h)
+void TextureManager::draw_frame(SDL_Texture *texture, SDL_Renderer *renderer, int x_pos, int y_pos, int frame_col, int frame_row, int src_w, int src_h, int dst_w, int dst_h)
 {
     SDL_Rect src_rect;
     src_rect.x = 0 + frame_col * src_w;
@@ -61,7 +61,7 @@ void TextureManager::draw_frame(std::string id, SDL_Renderer *renderer, int x_po
     dst_rect.y = y_pos;
     dst_rect.w = dst_w;
     dst_rect.h = dst_h;
-    SDL_RenderCopy(renderer, textures_map[id], &src_rect, &dst_rect);
+    SDL_RenderCopy(renderer, texture, &src_rect, &dst_rect);
 }
 
 void TextureManager::remove_texture(std::string id)

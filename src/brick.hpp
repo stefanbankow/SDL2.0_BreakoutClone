@@ -6,7 +6,7 @@
 
 enum BrickTextures
 {
-    BRICK_RED = 1,
+    BRICK_RED = 1, //1 becayse 0 is reserved for empty spaces
     BRICK_GREEN,
     BRICK_BLUE,
     BRICK_YELLOW,

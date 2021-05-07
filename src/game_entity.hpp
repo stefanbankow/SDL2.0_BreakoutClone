@@ -26,7 +26,7 @@ public:
     int get_x_pos() const { return x_pos; };
     int get_y_pos() const { return y_pos; };
     SDL_Renderer *get_renderer() const { return renderer; };
-    std::string get_texture_id() const { return texture_ID; };
+    SDL_Texture *get_texture() const { return texture; };
 
 protected:
     int x_pos;
@@ -37,9 +37,9 @@ protected:
     int dst_h;
 
 private:
-    //Renderer is destroyed at end of program, so there is no need to free it in the destructor
-    SDL_Renderer *renderer;
-    std::string texture_ID;
+    //Renderer and texture are destroyed at end of program, so there is no need to free it in the destructor
+    SDL_Renderer *renderer = nullptr;
+    SDL_Texture *texture = nullptr;
 };
 
 #endif

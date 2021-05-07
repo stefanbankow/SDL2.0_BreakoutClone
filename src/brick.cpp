@@ -32,6 +32,6 @@ Brick::Brick(std::string texture_id, SDL_Renderer *renderer, int x_pos, int y_po
 void Brick::render()
 {
     SDL_Renderer *renderer = get_renderer();
-    std::string texture_id = get_texture_id();
-    TextureManager::get_instance()->draw_frame(texture_id, renderer, x_pos, y_pos, texture_col, texture_row, src_w, src_h, dst_w, dst_h);
+    SDL_Texture *texture = get_texture();
+    TextureManager::get_instance()->draw_frame(texture, renderer, x_pos, y_pos, texture_col, texture_row, src_w, src_h, dst_w, dst_h);
 }

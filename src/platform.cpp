@@ -84,5 +84,5 @@ void Platform::update()
 
 void Platform::render()
 {
-    TextureManager::get_instance()->draw(get_texture_id(), get_renderer(), x_pos, y_pos, src_w, src_h, dst_w, dst_h);
+    TextureManager::get_instance()->draw(get_texture(), get_renderer(), x_pos, y_pos, src_w, src_h, dst_w, dst_h);
 }
