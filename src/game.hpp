@@ -41,7 +41,7 @@ public:
     //Clean the assets used by the game
     void clean();
 
-    bool load_level(std::string level_file_path, int platform_movement_speed, int ball_movement_speed);
+    bool load_level(int level_index, int platform_movement_speed, int ball_movement_speed);
     void load_menus();
     void handle_menu_selection(int selection);
 
@@ -60,6 +60,7 @@ private:
 
     //Level
     Level *level = nullptr;
+    int current_level = 1;
 
     //Fonts
     TTF_Font *menu_title_font = nullptr;

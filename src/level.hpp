@@ -31,6 +31,7 @@ public:
 
     bool is_successfully_loaded() const { return successfully_loaded; }
     bool is_failed() const { return failed; }
+    bool is_completed() const { return completed; }
 
 private:
     bool successfully_loaded = false;

@@ -72,6 +72,10 @@ void Level::update()
             {
                 failed = true;
             }
+            else if (!bricks->get_brick_count())
+            {
+                completed = true;
+            }
         }
     }
 }
