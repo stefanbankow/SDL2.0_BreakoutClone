@@ -67,12 +67,13 @@ private:
 
     int platform_movement_speed;
 
-    int y_movement_speed;
+    int ball_movement_speed;
 
     bool released = false;
     bool touched_a = false;
     bool touched_d = false;
     bool out_of_bounds = false;
+    int initial_x_velocity = 0;
     int x_velocity = 0;
     int y_velocity = 0;
 };

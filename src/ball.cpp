@@ -8,11 +8,11 @@ enum Directions
     VECTOR_LEFT
 };
 
-Ball::Ball(std::string texture_id, std::string particle_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed, int y_movement_speed)
+Ball::Ball(std::string texture_id, std::string particle_texture_id, SDL_Renderer *renderer, int x_pos, int y_pos, int platform_movement_speed, int ball_movement_speed)
     : GameEntity(texture_id, renderer, x_pos, y_pos)
 {
     this->platform_movement_speed = platform_movement_speed;
-    this->y_movement_speed = y_movement_speed > 0 ? y_movement_speed : 1;
+    this->ball_movement_speed = ball_movement_speed > 0 ? ball_movement_speed : 1;
     particle_texture = TextureManager::get_instance()->get_texture(particle_texture_id);
 
     for (int i = 0; i < PARTICLE_COUNT; i++)
@@ -266,16 +266,12 @@ void Ball::handle_platform_collision(Platform &entity, int closest_point_x, int 
     {
         int platform_x_pos = entity.get_x_pos();
         int platform_width = entity.get_desired_width();
-        int platform_velocity = entity.get_x_velocity();
+        int platform_center_x = platform_x_pos + platform_width / 2;
 
-        //If the ball was going left and falls on the right side of the platform, while the platform is going right it will get sent back in the opposite direction
-        //Same goes for the left side
-        bool hard_impact_right = closest_point_x >= platform_x_pos + (platform_width - platform_width / 3) && platform_velocity > 0 && x_velocity < 0;
-        bool hard_impact_left = closest_point_x <= platform_x_pos + platform_width / 3 && platform_velocity < 0 && x_velocity > 0;
-        if (hard_impact_left || hard_impact_right)
-        {
-            x_velocity = -x_velocity;
-        }
+        int distance_to_center = (x_pos + dst_w / 2) - platform_center_x;
+        double velocity_offset_percentage = distance_to_center * 1.0 / (platform_width / 2.0);
+
+        x_velocity = initial_x_velocity * velocity_offset_percentage * 2;
 
         y_velocity = -y_velocity;
     }
@@ -285,11 +281,15 @@ void Ball::release()
 {
 
     std::random_device generator;
-    std::uniform_int_distribution<int> distribution(-2 * y_movement_speed, 2 * y_movement_speed);
+    std::uniform_int_distribution<int> distribution(-ball_movement_speed + 1, ball_movement_speed - 1);
     released = true;
-    x_velocity = distribution(generator);
 
-    y_velocity = -y_movement_speed; // Use the negative value of the movement speed, because otherwise the balls goes downward
+    x_velocity = distribution(generator);
+    initial_x_velocity = abs(x_velocity);
+
+    y_velocity = -ball_movement_speed; // Use the negative value of the movement speed, because otherwise the balls goes downward
+
+    std::cout << "X Velocity: " << x_velocity << "\tY Velocity: " << y_velocity << "\n";
 }
 
 void Ball::set_location(int x, int y)

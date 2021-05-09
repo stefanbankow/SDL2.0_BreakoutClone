@@ -233,19 +233,18 @@ void Game::load_menus()
     if (menus[MENU_MAIN] != nullptr) //Create the main men
     {
         menus[MENU_MAIN]->add_title("BREAKOUT", window_width / 2 - menus[MENU_MAIN]->get_title_width() / 2, 50);
-        menus[MENU_MAIN]->add_item("START", 350);
-        menus[MENU_MAIN]->add_item("SETTINGS", 450);
-        menus[MENU_MAIN]->add_item("EXIT", 550);
+        menus[MENU_MAIN]->add_item("START", 425);
+        menus[MENU_MAIN]->add_item("EXIT", 525);
     }
 
-    menus[MENU_CHOOSE_LEVEL] = new Menu(menu_title_font, menu_item_font, renderer, item_color, item_color, active_item_color, 550, 200);
+    menus[MENU_CHOOSE_LEVEL] = new Menu(menu_title_font, menu_item_font, renderer, item_color, item_color, active_item_color, 600, 200);
     if (menus[MENU_CHOOSE_LEVEL] != nullptr) //Create the main men
     {
         menus[MENU_CHOOSE_LEVEL]->add_title("CHOOSE A LEVEL", window_width / 2 - menus[MENU_CHOOSE_LEVEL]->get_title_width() / 2, 50);
-        menus[MENU_CHOOSE_LEVEL]->add_item("LEVEL 1", 250);
-        menus[MENU_CHOOSE_LEVEL]->add_item("LEVEL 2", 350);
-        menus[MENU_CHOOSE_LEVEL]->add_item("LEVEL 3", 450);
-        menus[MENU_CHOOSE_LEVEL]->add_item("BACK", 550);
+        menus[MENU_CHOOSE_LEVEL]->add_item("LEVEL 1", 300);
+        menus[MENU_CHOOSE_LEVEL]->add_item("LEVEL 2", 400);
+        menus[MENU_CHOOSE_LEVEL]->add_item("LEVEL 3", 500);
+        menus[MENU_CHOOSE_LEVEL]->add_item("BACK", 600);
     }
 
     menus[MENU_PAUSED] = new Menu(menu_title_font, menu_item_font, renderer, item_color, item_color, active_item_color, 300, 100);
@@ -283,8 +282,6 @@ void Game::handle_menu_selection(int selection)
         case MENUOPT_START_PLAYING: //Load the level and start playing
             set_state(STATE_CHOOSING_LEVEL);
             break;
-        case MENUOPT_GO_TO_SETTINGS: //Haven't implemented any settings so this button does nothing
-            break;
         case MENUOPT_EXIT: //Stops the game
             is_running = false;
             break;
@@ -295,18 +292,18 @@ void Game::handle_menu_selection(int selection)
         {
         case LEVELOPT_1:
             current_level = 1;
-            load_level(current_level, 8, 5);
+            load_level(current_level, 8, 8);
             set_state(STATE_PLAYING);
             break;
         case LEVELOPT_2:
             current_level = 2;
-            load_level(current_level, 8, 5);
+            load_level(current_level, 8, 8);
             set_state(STATE_PLAYING);
 
             break;
         case LEVELOPT_3:
             current_level = 3;
-            load_level(current_level, 8, 5);
+            load_level(current_level, 8, 8);
             set_state(STATE_PLAYING);
 
             break;
@@ -339,7 +336,7 @@ void Game::handle_menu_selection(int selection)
         switch (selection)
         {
         case PAUSEOPT_CONTINUE_OR_RETRY:
-            load_level(current_level, 6, 3); //Reset the level
+            load_level(current_level, 8, 8); //Reset the level
             set_state(STATE_PLAYING);
             break;
         case PAUSEOPT_EXIT_TO_MAIN_MENU:

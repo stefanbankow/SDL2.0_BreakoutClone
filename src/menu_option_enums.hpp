@@ -3,9 +3,8 @@
 #define MENU_OPTIONS_ENUMS_HPP
 enum MainMenuOption
 {
-    MENUOPT_START_PLAYING,  //Start the game from the main menu
-    MENUOPT_GO_TO_SETTINGS, //Goes to settings
-    MENUOPT_EXIT,           //Exit to desktop
+    MENUOPT_START_PLAYING, //Start the game from the main menu
+    MENUOPT_EXIT,          //Exit to desktop
 };
 
 enum ChooseLevelMenuOption
