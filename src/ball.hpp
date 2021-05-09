@@ -73,8 +73,8 @@ private:
     bool touched_a = false;
     bool touched_d = false;
     bool out_of_bounds = false;
-    int initial_x_velocity = 0;
-    int x_velocity = 0;
-    int y_velocity = 0;
+    double initial_x_velocity = 0;
+    double x_velocity = 0;
+    double y_velocity = 0;
 };
 #endif

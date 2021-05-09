@@ -268,12 +268,25 @@ void Ball::handle_platform_collision(Platform &entity, int closest_point_x, int 
         int platform_width = entity.get_desired_width();
         int platform_center_x = platform_x_pos + platform_width / 2;
 
-        int distance_to_center = (x_pos + dst_w / 2) - platform_center_x;
-        double velocity_offset_percentage = distance_to_center * 1.0 / (platform_width / 2.0);
+        Vector2D old_velocity(x_velocity, y_velocity);
 
-        x_velocity = initial_x_velocity * velocity_offset_percentage * 2;
+        int distance_to_center = (x_pos + dst_w / 2) - platform_center_x;                      //Calculate the horizontal pixels from the center of the ball to the centre of the platform
+        double velocity_offset_percentage = distance_to_center * 1.0 / (platform_width / 2.0); //Calculate by how much should the ball be offset
 
-        y_velocity = -y_velocity;
+        double new_x_velocity = initial_x_velocity * velocity_offset_percentage * 2;
+
+        double new_y_velocity = -y_velocity;
+
+        /* Because hitting the ball at the edge of the platform results in a much higher velocity than hitting the center,
+        we have to get the normalized vector of the new velocity and multiply it by the length of the old one.
+        I had to change the x_velocity and y_velocity to floats instead of ints, because ints resulted in a loss of speed every time the ball bounced off
+        */
+        Vector2D new_velocity_normalized = Vector2D(new_x_velocity, new_y_velocity).get_normalized_vector();
+        new_velocity_normalized.set_x(new_velocity_normalized.get_x() * old_velocity.get_length());
+        new_velocity_normalized.set_y(new_velocity_normalized.get_y() * old_velocity.get_length());
+
+        x_velocity = new_velocity_normalized.get_x();
+        y_velocity = new_velocity_normalized.get_y();
     }
 }
 
@@ -288,8 +301,6 @@ void Ball::release()
     initial_x_velocity = abs(x_velocity);
 
     y_velocity = -ball_movement_speed; // Use the negative value of the movement speed, because otherwise the balls goes downward
-
-    std::cout << "X Velocity: " << x_velocity << "\tY Velocity: " << y_velocity << "\n";
 }
 
 void Ball::set_location(int x, int y)
