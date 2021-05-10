@@ -34,6 +34,9 @@ public:
     void init(const char *title, int width, int height, bool fullscreen = false, int x_pos = SDL_WINDOWPOS_UNDEFINED, int y_pos = SDL_WINDOWPOS_UNDEFINED);
     //Handles user input
     void handle_input();
+    void handle_playing_input(SDL_Event &e);
+    void handle_menu_navigation(SDL_Event &e);
+    void handle_menu_selection(int selection);
     //Update the properties of the objects inside the game
     void update();
     //Update what the player sees
@@ -43,7 +46,6 @@ public:
 
     bool load_level(int level_index, int platform_movement_speed, int ball_movement_speed);
     void load_menus();
-    void handle_menu_selection(int selection);
 
     //Getters/Setters/Util
     bool is_game_running() const { return is_running; };

@@ -84,52 +84,62 @@ void Game::handle_input()
 
     if (current_game_state == STATE_PLAYING) //Handle the input for playing the game (controlling the platform)
     {
-        if (level != nullptr)
-        {
-            if (e.key.keysym.sym == SDLK_ESCAPE) //Pause the game on escape
-            {
-                set_state(STATE_PAUSED);
-            }
-            else
-            {
-                level->handle_input(e); //Send the input to the platform/ball
-            }
-        }
+        handle_playing_input(e);
     }
     else
     {
-        Menu *current_menu = nullptr; //Create a pointer to store the address of the menu we have to use
-        switch (current_game_state)   //Set the current_menu to the appropriate menu depending on the game state value
-        {
-        case STATE_MAIN_MENU:
-            current_menu = menus[MENU_MAIN];
-            break;
-        case STATE_CHOOSING_LEVEL:
-            current_menu = menus[MENU_CHOOSE_LEVEL];
-            break;
-        case STATE_PAUSED:
-            current_menu = menus[MENU_PAUSED];
-            break;
-        case STATE_GAME_OVER:
-            current_menu = menus[MENU_GAME_OVER];
-            break;
-        case STATE_COMPLETED:
-            current_menu = menus[MENU_LEVEL_COMPLETED];
-            break;
-        default:
-            break;
-        }
-        if (current_menu != nullptr && e.type == SDL_KEYDOWN)
-        {
-            if (e.key.keysym.sym == SDLK_RETURN && e.key.repeat == 0) //Upon pressing enter, check the currently selected option
-            {
-                handle_menu_selection(current_menu->get_selected_option());
-            }
+        handle_menu_navigation(e);
+    }
+}
 
-            else
-            {
-                current_menu->handle_input(e);
-            }
+void Game::handle_playing_input(SDL_Event &e)
+{
+    if (level != nullptr)
+    {
+        if (e.key.keysym.sym == SDLK_ESCAPE) //Pause the game on escape
+        {
+            set_state(STATE_PAUSED);
+        }
+        else
+        {
+            level->handle_input(e); //Send the input to the platform/ball
+        }
+    }
+}
+
+void Game::handle_menu_navigation(SDL_Event &e)
+{
+    Menu *current_menu = nullptr; //Create a pointer to store the address of the menu we have to use
+    switch (current_game_state)   //Set the current_menu to the appropriate menu depending on the game state value
+    {
+    case STATE_MAIN_MENU:
+        current_menu = menus[MENU_MAIN];
+        break;
+    case STATE_CHOOSING_LEVEL:
+        current_menu = menus[MENU_CHOOSE_LEVEL];
+        break;
+    case STATE_PAUSED:
+        current_menu = menus[MENU_PAUSED];
+        break;
+    case STATE_GAME_OVER:
+        current_menu = menus[MENU_GAME_OVER];
+        break;
+    case STATE_COMPLETED:
+        current_menu = menus[MENU_LEVEL_COMPLETED];
+        break;
+    default:
+        break;
+    }
+    if (current_menu != nullptr && e.type == SDL_KEYDOWN)
+    {
+        if (e.key.keysym.sym == SDLK_RETURN && e.key.repeat == 0) //Upon pressing enter, check the currently selected option
+        {
+            handle_menu_selection(current_menu->get_selected_option());
+        }
+
+        else
+        {
+            current_menu->handle_input(e);
         }
     }
 }

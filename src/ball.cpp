@@ -43,6 +43,17 @@ void Ball::update(Platform &entity)
 void Ball::render()
 {
 
+    replace_dead_particles();
+
+    render_particles();
+
+    //Render ball on top of particles
+    TextureManager::get_instance()
+        ->draw(get_texture(), get_renderer(), x_pos, y_pos, src_w, src_h, dst_w, dst_h);
+}
+
+void Ball::replace_dead_particles()
+{
     for (int i = 0; i < PARTICLE_COUNT; ++i)
     {
         //Delete and replace dead particles
@@ -52,13 +63,13 @@ void Ball::render()
             particles[i] = new Particle(particle_texture, x_pos, y_pos, 12, 5, 5);
         }
     }
-
+}
+void Ball::render_particles()
+{
     for (int i = 0; i < PARTICLE_COUNT; ++i)
     {
         particles[i]->render(get_renderer());
     }
-    //Render ball on top of particles
-    TextureManager::get_instance()->draw(get_texture(), get_renderer(), x_pos, y_pos, src_w, src_h, dst_w, dst_h);
 }
 
 void Ball::handle_input(SDL_Event &e)
@@ -67,39 +78,48 @@ void Ball::handle_input(SDL_Event &e)
     {
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
         {
-            switch (e.key.keysym.sym)
-            {
-            case SDLK_a:
-                touched_a = true;
-                x_velocity -= platform_movement_speed;
-                break;
-            case SDLK_d:
-                touched_d = true;
-                x_velocity += platform_movement_speed;
-                break;
-            case SDLK_SPACE:
-                release();
-                break;
-            default:
-                break;
-            }
+            handle_key_pressed(e);
         }
         else if (e.type == SDL_KEYUP && e.key.repeat == 0)
         {
-            switch (e.key.keysym.sym)
-            {
-            case SDLK_a:
-                if (touched_a)
-                    x_velocity += platform_movement_speed;
-                break;
-            case SDLK_d:
-                if (touched_d)
-                    x_velocity -= platform_movement_speed;
-                break;
-            default:
-                break;
-            }
+            handle_key_released(e);
         }
+    }
+}
+
+void Ball::handle_key_pressed(SDL_Event &e)
+{
+    switch (e.key.keysym.sym)
+    {
+    case SDLK_a:
+        touched_a = true;
+        x_velocity -= platform_movement_speed;
+        break;
+    case SDLK_d:
+        touched_d = true;
+        x_velocity += platform_movement_speed;
+        break;
+    case SDLK_SPACE:
+        release();
+        break;
+    default:
+        break;
+    }
+}
+void Ball::handle_key_released(SDL_Event &e)
+{
+    switch (e.key.keysym.sym)
+    {
+    case SDLK_a:
+        if (touched_a)
+            x_velocity += platform_movement_speed;
+        break;
+    case SDLK_d:
+        if (touched_d)
+            x_velocity -= platform_movement_speed;
+        break;
+    default:
+        break;
     }
 }
 

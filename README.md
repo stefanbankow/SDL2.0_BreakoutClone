@@ -42,4 +42,3 @@ The process of building the source files yourself varies for different operating
 ![Game Over Screen](assets/screenshots/level_3.png)
 
 ![Playing](assets/screenshots/level_2.png)
-

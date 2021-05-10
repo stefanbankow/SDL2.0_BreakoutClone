@@ -25,8 +25,15 @@ public:
     void update(Platform &entity);
     //Handles input for moving the ball while it's still attached to the platform and for releasing the ball
     void handle_input(SDL_Event &e);
+    void handle_key_pressed(SDL_Event &e);
+    void handle_key_released(SDL_Event &e);
     //Renders the ball and checks for old particles to be destroyed
     void render() override;
+
+    //Replaces the particles that have been on-screen long enough
+    void replace_dead_particles();
+    //Calls the render function for each particle
+    void render_particles();
 
     //////Movement
 
