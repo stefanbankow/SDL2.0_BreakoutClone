@@ -15,11 +15,10 @@ Some of the code can be refactored to be more easily reusable, but my focus was 
 
 ## Installation
 
-### Game
-
+### Windows
 If you want to play the game, simply clone the repository, copy the `assets` folder inside the `build` folder and run `Breakout.exe`.
 
-### Source code
+### Source code/other platforms
 
 The process of building the source files yourself varies for different operating systems and I cannot give a detailed explanation for each. Some general directions are to `clone the repository`, install the `libraries` listed in the [Dependencies](#Dependencies) section and then `include and link` them to your workspace.
 
